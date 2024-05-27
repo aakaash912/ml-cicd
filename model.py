@@ -46,7 +46,4 @@ classification=nlp(sentence)._.cats
 print(classification)
 with open('metrics.txt', 'w') as outfile:
     outfile.write(sentence)
-    if classification["Positive"]>0.5:
-        outfile.write('Positive')
-    else:
-        outfile.write('Negative')
+    outfile.write(classification)
