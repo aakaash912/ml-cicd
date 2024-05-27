@@ -1,5 +1,5 @@
 import spacy
-import classy-classification
+import classy_classification
 nlp=spacy.load("en_core_web_sm")
 data = {
     "Positive": [
