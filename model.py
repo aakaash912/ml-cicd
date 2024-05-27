@@ -39,5 +39,14 @@ data = {
     "She struggles to achieve anything."
 ]
 }
+sentence="This is an awfully good tasting Cherry Pie."
 nlp.add_pipe("classy_classification",config={"data": data, "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"})
-print(nlp("This is an awfully good tasting Cherry Pie.")._.cats)
+print(sentence)
+classification=nlp(sentence)._.cats
+print(classification)
+with open('metrics.txt', 'w') as outfile:
+    outfile.write(sentence,":")
+    if classification["Positive"]>0.5:
+        outfile.write('Positive')
+    else:
+        outfile.write('Negative')
