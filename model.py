@@ -40,3 +40,4 @@ data = {
 ]
 }
 nlp.add_pipe("classy_classification",config={"data": data, "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"})
+print(nlp("This is an awfully good tasting Cherry Pie.")._.cats)
