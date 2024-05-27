@@ -46,4 +46,4 @@ classification=nlp(sentence)._.cats
 print(classification)
 with open('metrics.txt', 'w') as outfile:
     outfile.write(sentence)
-    outfile.write(classification)
+    outfile.write(str(classification))
