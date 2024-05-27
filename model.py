@@ -44,6 +44,3 @@ nlp.add_pipe("classy_classification",config={"data": data, "model": "sentence-tr
 print(sentence)
 classification=nlp(sentence)._.cats
 print(classification)
-with open('metrics.txt', 'w') as outfile:
-    outfile.write(sentence)
-    outfile.write(str(classification))
