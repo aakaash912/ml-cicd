@@ -1,103 +1,46 @@
-# Import modules and packages
-import tensorflow as tf
-import numpy as np
-import matplotlib.pyplot as plt
-
-
-# Functions and procedures
-def plot_predictions(train_data, train_labels,  test_data, test_labels,  predictions):
-  """
-  Plots training data, test data and compares predictions.
-  """
-  plt.figure(figsize=(6, 5))
-  # Plot training data in blue
-  plt.scatter(train_data, train_labels, c="b", label="Training data")
-  # Plot test data in green
-  plt.scatter(test_data, test_labels, c="g", label="Testing data")
-  # Plot the predictions in red (predictions were made on the test data)
-  plt.scatter(test_data, predictions, c="r", label="Predictions")
-  # Show the legend
-  plt.legend(shadow='True')
-  # Set grids
-  plt.grid(which='major', c='#cccccc', linestyle='--', alpha=0.5)
-  # Some text
-  plt.title('Model Results', family='Arial', fontsize=14)
-  plt.xlabel('X axis values', family='Arial', fontsize=11)
-  plt.ylabel('Y axis values', family='Arial', fontsize=11)
-  # Show
-  plt.savefig('model_results.png', dpi=120)
-
-
-
-def mae(y_test, y_pred):
-  """
-  Calculuates mean absolute error between y_test and y_preds.
-  """
-  return tf.metrics.mean_absolute_error(y_test, y_pred)
+import spacy
+import classy_classification
+nlp=spacy.load("en_core_web_sm")
+data = {
+    "Positive": [
+    "He is doing a great job.",
+    "She is doing a great job.",
+    "Today is a beautiful day.",
+    "He makes a difference.",
+    "She makes a difference.",
+    "He is so kind.",
+    "She is so kind.",
+    "He should believe in himself.",
+    "She should believe in herself.",
+    "He is important.",
+    "She is important.",
+    "His smile is wonderful.",
+    "Her smile is wonderful.",
+    "He is loved.",
+    "She is loved."],
   
-
-def mse(y_test, y_pred):
-  """
-  Calculates mean squared error between y_test and y_preds.
-  """
-  return tf.metrics.mean_squared_error(y_test, y_pred)
-
-
-# Check Tensorflow version
-print(tf.__version__)
-
-
-# Create features
-X = np.arange(-100, 100, 4)
-
-# Create labels
-y = np.arange(-90, 110, 4)
-
-
-# Split data into train and test sets
-N = 25
-X_train = X[:N] # first 40 examples (80% of data)
-y_train = y[:N]
-
-X_test = X[N:] # last 10 examples (20% of data)
-y_test = y[N:]
-
-
-# Take a single example of X
-input_shape = X[0].shape 
-
-# Take a single example of y
-output_shape = y[0].shape
-
-
-# Set random seed
-tf.random.set_seed(1989)
-
-# Create a model using the Sequential API
-model = tf.keras.Sequential([
-    tf.keras.layers.Dense(1), 
-    tf.keras.layers.Dense(1)
-    ])
-
-# Compile the model
-model.compile(loss = tf.keras.losses.mae,
-              optimizer = tf.keras.optimizers.SGD(),
-              metrics = ['mae'])
-
-# Fit the model
-model.fit(X_train, y_train, epochs=100)
-
-
-# Make and plot predictions for model_1
-y_preds = model.predict(X_test)
-plot_predictions(train_data=X_train, train_labels=y_train,  test_data=X_test, test_labels=y_test,  predictions=y_preds)
-
-
-# Calculate model_1 metrics
-mae_1 = np.round(float(mae(y_test, y_preds.squeeze()).numpy()), 2)
-mse_1 = np.round(float(mse(y_test, y_preds.squeeze()).numpy()), 2)
-print(f'\nMean Absolute Error = {mae_1}, Mean Squared Error = {mse_1}.')
-
-# Write metrics to file
-with open('metrics.txt', 'w') as outfile:
-    outfile.write(f'\nMean Absolute Error = {mae_1}, Mean Squared Error = {mse_1}.')
+    "Negative": [
+    "He is not doing well.",
+    "She is not doing well.",
+    "Today is a bad day.",
+    "He makes mistakes.",
+    "She makes mistakes.",
+    "He is unkind.",
+    "She is unkind.",
+    "He doubts himself.",
+    "She doubts herself.",
+    "He feels unimportant.",
+    "She feels unimportant.",
+    "His smile is missing.",
+    "Her smile is missing.",
+    "He feels unloved.",
+    "She feels unloved.",
+    "He struggles to achieve anything.",
+    "She struggles to achieve anything."
+]
+}
+sentence="This is an awfully good tasting Cherry Pie."
+nlp.add_pipe("classy_classification",config={"data": data, "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"})
+print(sentence)
+classification=nlp(sentence)._.cats
+print(classification)
