@@ -2,7 +2,7 @@ import spacy
 import classy_classification
 nlp=spacy.load("en_core_web_sm")
 data = {
-    "Negative": [
+    "Positive": [
     "He is doing a great job.",
     "She is doing a great job.",
     "Today is a beautiful day.",
@@ -19,7 +19,7 @@ data = {
     "He is loved.",
     "She is loved."],
   
-    "Positive": [
+    "Negative": [
     "He is not doing well.",
     "She is not doing well.",
     "Today is a bad day.",
